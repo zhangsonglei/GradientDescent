@@ -15,6 +15,9 @@ public class CalcParam {
 		double[] para = new double[pred_size + 1];//自变量参数h=ax1+bx2+c,para[0]=a,para[1]=b,para[2]=c
 		int train_size = pred_var[0].length;//训练数据个数
 
+		for(double p : para)
+			p = 0;
+		
 	    for(int i = 0; i < train_size; i++) {
 	    	hy_value = 0;
 	    	for(int j = 0; j <= pred_size; j++)
@@ -29,7 +32,7 @@ public class CalcParam {
 		int flag = 0;//迭代次数
 			
 		while(true) {
-			double[] temp_para = new double[pred_size + 1];//存放当前的参数值
+			double[] temp_para = new double[pred_size + 1];//存放斜率（偏导数）
 			for (double d : temp_para)//初始化参数值为0
 				d = 0;
 			
@@ -39,12 +42,12 @@ public class CalcParam {
 					for(int h = 0; h <= pred_size; h++)
 						hy_value += para[h] * pred_var[h][i];
 						
-					temp_para[j] += ((hy_value - crit_var[i]) * pred_var[j][i]);	 
+					temp_para[j] += ((hy_value - crit_var[i]) * pred_var[j][i]);//求代价函数的斜率	 
 				}
 					
 			for(int i = 0; i <= pred_size; i++)
-				para[i] -= rate * temp_para[i];
-				
+				para[i] -= rate * temp_para[i]; //rate学习速率，代表梯度下降的步长
+			
 	    	for(int i = 0; i < train_size; i++) {
 	    		hy_value=0;
 			   	for(int j = 0; j <= pred_size; j++)
